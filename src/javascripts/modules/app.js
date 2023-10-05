@@ -1,78 +1,164 @@
-/**
- *  Example app
- **/
-import React from 'react'
-import { render } from 'react-dom'
-import { ThemeProvider, DEFAULT_THEME } from '@zendeskgarden/react-theming'
-import { Grid, Row, Col } from '@zendeskgarden/react-grid'
-import { UnorderedList } from '@zendeskgarden/react-typography'
-import I18n from '../../javascripts/lib/i18n'
-import { resizeContainer, escapeSpecialChars as escape } from '../../javascripts/lib/helpers'
+import React from "react";
+import { render } from "react-dom";
+import { ThemeProvider, DEFAULT_THEME } from "@zendeskgarden/react-theming";
+import { Ellipsis, SM, Span } from "@zendeskgarden/react-typography";
+import { Grid, Row, Col } from "@zendeskgarden/react-grid";
+import { Alert, Title, Close } from "@zendeskgarden/react-notifications";
+import { Tooltip } from "@zendeskgarden/react-tooltips";
+import { Anchor } from "@zendeskgarden/react-buttons";
+import { resizeContainer } from "../../javascripts/lib/helpers";
+import Subscription from "./subscription";
+import Payments from "./payments";
 
-const MAX_HEIGHT = 1000
-const API_ENDPOINTS = {
-  organizations: '/api/v2/organizations.json'
-}
+const MAX_HEIGHT = 2000;
 
 class App {
-  constructor (client, _appData) {
-    this._client = client
+  constructor(client, _appData) {
+    this._client = client;
 
-    // this.initializePromise is only used in testing
-    // indicate app initilization(including all async operations) is complete
-    this.initializePromise = this.init()
+    this.initializePromise = this.init();
   }
 
-  /**
-   * Initialize module, render main template
-   */
-  async init () {
-    const currentUser = (await this._client.get('currentUser')).currentUser
+  async init() {
+    const requester = (await this._client.get("ticket.requester"))[
+      "ticket.requester"
+    ];
 
-    I18n.loadTranslations(currentUser.locale)
+    const userDataRequestOptions = {
+      url: `https://zendesk--integration-hlg6qksfkq-uc.a.run.app/api/zendesk/requester?requester_email=${requester.email}`,
+      method: "GET",
+      cors: false,
+      headers: {
+        Authorization: "Bearer {{setting.JWT_TOKEN}}",
+      },
+      secure: true
+    };
 
-    const organizationsResponse = await this._client
-      .request(API_ENDPOINTS.organizations)
-      .catch(this._handleError.bind(this))
+    const appContainer = document.querySelector(".main");
 
-    const organizations = organizationsResponse ? organizationsResponse.organizations : []
+    const l = await this._client
+      .request(userDataRequestOptions)
+      .then((data) => {
+        this.renderRequesterData(appContainer, requester, data);
+      })
+      .catch((err) => {
+        this.renderErrorMessage(appContainer, err.responseJSON.detail);
+      });
 
-    const appContainer = document.querySelector('.main')
+    return resizeContainer(this._client, MAX_HEIGHT);
+  }
 
+  renderRequesterData(container, requester, requesterData) {
     render(
       <ThemeProvider theme={{ ...DEFAULT_THEME }}>
+        <Title style={{ margin: "12px 0px", bold: true }}>GENERAL INFO</Title>
         <Grid>
           <Row>
-            <Col data-test-id='sample-app-description'>
-              Hi {escape(currentUser.name)}, this is a sample app
+            <Col size={3}>
+              <SM isBold={true}>Email:</SM>
+            </Col>
+            <Col xs>
+              <SM>
+                <Tooltip content="Copy">
+                  <Anchor
+                    href="#default"
+                    isExternal={false}
+                    onClick={() => {
+                      this.copyText(requester.email);
+                    }}
+                  >
+                    <Span hue="blue">{requester.email}</Span>
+                  </Anchor>
+                </Tooltip>
+              </SM>
             </Col>
           </Row>
           <Row>
+            <Col size={3}>
+              <SM isBold={true}>UID:</SM>
+            </Col>
             <Col>
-              <span>{I18n.t('default.organizations')}:</span>
-              <UnorderedList data-test-id='organizations'>
-                {organizations.map(organization => (
-                  <UnorderedList.Item key={`organization-${organization.id}`} data-test-id={`organization-${organization.id}`}>
-                    {escape(organization.name)}
-                  </UnorderedList.Item>
-                ))}
-              </UnorderedList>
+              <SM>
+                <Tooltip content="Copy">
+                  <Anchor
+                    href="#default"
+                    isExternal={false}
+                    onClick={() => {
+                      this.copyText(requester.externalId);
+                    }}
+                  >
+                    <Span hue="blue">{requester.externalId}</Span>
+                  </Anchor>
+                </Tooltip>
+              </SM>
+            </Col>
+          </Row>
+          <Row>
+            <Col size={3}>
+              <SM isBold={true}>Country:</SM>
+            </Col>
+            <Col>
+              <SM>{requesterData.user.country}</SM>
             </Col>
           </Row>
         </Grid>
+
+        <Title style={{ margin: "12px 0px", bold: true }}>APP INFO</Title>
+        <Grid>
+          <Row>
+            <Col size={3}>
+              <SM isBold={true}>OS:</SM>
+            </Col>
+            <Col xs>
+              <SM>
+                <Ellipsis>{requesterData.user.app.os_version}</Ellipsis>
+              </SM>
+            </Col>
+          </Row>
+          <Row>
+            <Col size={3}>
+              <SM isBold={true}>App:</SM>
+            </Col>
+            <Col>
+              <SM>{requesterData.user.app.app_version}</SM>
+            </Col>
+          </Row>
+        </Grid>
+
+        {requesterData.web_subscription && (
+          <Subscription
+            subscription={requesterData.web_subscription}
+            title="WEB SUBSCRIPTION"
+          />
+        )}
+        {requesterData.web_upsell_subscription && (
+          <Subscription
+            subscription={requesterData.web_upsell_subscription}
+            title="WEB UPSELL SUBSCRIPTION"
+          />
+        )}
+        {requesterData.web_payments.length != 0 && (
+          <Payments payments={requesterData.web_payments} />
+        )}
       </ThemeProvider>,
-      appContainer
-    )
-    return resizeContainer(this._client, MAX_HEIGHT)
+      container
+    );
   }
 
-  /**
-   * Handle error
-   * @param {Object} error error object
-   */
-  _handleError (error) {
-    console.log('An error is handled here: ', error.message)
+  renderErrorMessage(container, errorMessage) {
+    render(
+      <Alert type="error">
+        <Title>Error</Title>
+        {errorMessage}
+        <Close aria-label="Close Error Alert" />
+      </Alert>,
+      container
+    );
+  }
+
+  copyText(text) {
+    navigator.clipboard.writeText(text);
   }
 }
 
-export default App
+export default App;
