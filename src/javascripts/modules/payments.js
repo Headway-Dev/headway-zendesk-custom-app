@@ -7,9 +7,13 @@ export default function Payments({ payments }) {
   return (
     <div>
       <Title style={{ margin: "12px 0px", bold: true }}>PAYMENTS</Title>
-      {payments.map((payment) => {
+      {[
+        ...new Map(
+          payments.reverse().map((item) => [item.order_id, item])
+        ).values(),
+      ].map((payment) => {
         return (
-          <Grid style={{ margin: "12px 0px" }}>
+          <Grid style={{ margin: "12px 0px" }} key={payment.order_id}>
             <Row>
               <Col size={3}>
                 <SM isBold={true}>Name:</SM>
@@ -29,6 +33,16 @@ export default function Payments({ payments }) {
                   <Span hue="grey">
                     {payment.order_amount} {payment.order_currency}
                   </Span>
+                </SM>
+              </Col>
+            </Row>
+            <Row>
+              <Col size={3}>
+                <SM isBold={true}>Status:</SM>
+              </Col>
+              <Col>
+                <SM>
+                  <Span hue="grey">{payment.order_status}</Span>
                 </SM>
               </Col>
             </Row>

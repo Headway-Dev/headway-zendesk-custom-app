@@ -2,9 +2,11 @@ import React from "react";
 import { Span } from "@zendeskgarden/react-typography";
 import { Title } from "@zendeskgarden/react-notifications";
 import { Grid, Row, Col } from "@zendeskgarden/react-grid";
+import { Button } from "@zendeskgarden/react-buttons";
 import { SM } from "@zendeskgarden/react-typography";
+import StatusSpan from "./status_span";
 
-export default function Subscription({ subscription, title }) {
+export default function Subscription({ subscription, title, onCancel }) {
   return (
     <div>
       <Title style={{ margin: "12px 0px", bold: true }}>{title}</Title>
@@ -49,15 +51,39 @@ export default function Subscription({ subscription, title }) {
             <SM isBold={true}>Recurrent:</SM>
           </Col>
           <Col>
-            <SM isBold={true}>
-              {subscription.recurring_status ? (
-                <Span hue="green">TRUE</Span>
-              ) : (
-                <Span hue="red">FALSE</Span>
-              )}
-            </SM>
+            <StatusSpan status={subscription.recurring_status} />
           </Col>
         </Row>
+        {subscription.recurring_status && (
+          <Row>
+            <Col style={{ margin: "4px 0px" }}>
+              <Button
+                isPill
+                isDanger
+                isStretched
+                size="small"
+                style={{ margin: "4px 0px" }}
+                onClick={() => {
+                  onCancel(subscription.id, false);
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                isPill
+                isDanger
+                isStretched
+                size="small"
+                style={{ margin: "4px 0px" }}
+                onClick={() => {
+                  onCancel(subscription.id, true);
+                }}
+              >
+                Cancel now
+              </Button>
+            </Col>
+          </Row>
+        )}
       </Grid>
     </div>
   );

@@ -5,10 +5,11 @@ import { Ellipsis, SM, Span } from "@zendeskgarden/react-typography";
 import { Grid, Row, Col } from "@zendeskgarden/react-grid";
 import { Alert, Title, Close } from "@zendeskgarden/react-notifications";
 import { Tooltip } from "@zendeskgarden/react-tooltips";
-import { Anchor } from "@zendeskgarden/react-buttons";
+import { Anchor, Button } from "@zendeskgarden/react-buttons";
 import { resizeContainer } from "../../javascripts/lib/helpers";
 import Subscription from "./subscription";
 import Payments from "./payments";
+import StatusSpan from "./status_span";
 
 const MAX_HEIGHT = 2000;
 
@@ -16,6 +17,7 @@ class App {
   constructor(client, _appData) {
     this._client = client;
 
+    this.container = document.querySelector(".main");
     this.initializePromise = this.init();
   }
 
@@ -31,18 +33,17 @@ class App {
       headers: {
         Authorization: "Bearer {{setting.JWT_TOKEN}}",
       },
-      secure: true
+      secure: true,
     };
 
-    const appContainer = document.querySelector(".main");
-
-    const l = await this._client
+    await this._client
       .request(userDataRequestOptions)
       .then((data) => {
-        this.renderRequesterData(appContainer, requester, data);
+        this.renderRequesterData(this.container, requester, data);
       })
       .catch((err) => {
-        this.renderErrorMessage(appContainer, err.responseJSON.detail);
+        console.log(err);
+        this.renderErrorMessage(this.container, err.responseJSON.detail);
       });
 
     return resizeContainer(this._client, MAX_HEIGHT);
@@ -123,23 +124,79 @@ class App {
               <SM>{requesterData.user.app.app_version}</SM>
             </Col>
           </Row>
+          <Row>
+            <Col size={3}>
+              <SM isBold={true}>Platform:</SM>
+            </Col>
+            <Col>
+              <SM>{requesterData.user.app.platform}</SM>
+            </Col>
+          </Row>
+          <Row>
+            <Col size={3}>
+              <SM isBold={true}>Active:</SM>
+            </Col>
+            <Col>
+              <StatusSpan status={requesterData.user.subscription.is_active} />
+            </Col>
+          </Row>
+          <Row>
+            <Col size={3}>
+              <SM isBold={true}>Recurrent:</SM>
+            </Col>
+            <Col>
+              <StatusSpan
+                status={requesterData.user.subscription.is_recurrent}
+              />
+            </Col>
+          </Row>
         </Grid>
 
         {requesterData.web_subscription && (
           <Subscription
             subscription={requesterData.web_subscription}
             title="WEB SUBSCRIPTION"
+            onCancel={this.cancelSubscription.bind(this)}
           />
         )}
         {requesterData.web_upsell_subscription && (
           <Subscription
             subscription={requesterData.web_upsell_subscription}
             title="WEB UPSELL SUBSCRIPTION"
+            onCancel={this.cancelSubscription.bind(this)}
           />
         )}
         {requesterData.web_payments.length != 0 && (
           <Payments payments={requesterData.web_payments} />
         )}
+
+        <Title style={{ margin: "12px 0px", bold: true }}>ACTIONS</Title>
+        <Grid>
+          <Row>
+            <Col>
+              <SM>
+                <Anchor
+                  isExternal
+                  href={`https://app.iterable.com/users/profiles/${requester.email}/subscriptions`}
+                >
+                  Iterable subscriptions
+                </Anchor>
+              </SM>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <SM>
+                <Anchor
+                  isExternal
+                  href={`https://app.amplitude.com/analytics/get-headway/project/225541/search/email=${requester.email}`}
+                >
+                  Amplitude events
+                </Anchor>
+              </SM>
+            </Col>
+          </Row>
+        </Grid>
       </ThemeProvider>,
       container
     );
@@ -158,6 +215,29 @@ class App {
 
   copyText(text) {
     navigator.clipboard.writeText(text);
+  }
+
+  async cancelSubscription(subscription_id, force) {
+    return await this._client
+      .request({
+        url: `https://zendesk--integration-hlg6qksfkq-uc.a.run.app/api/zendesk/cancel_solid_subscription`,
+        method: "POST",
+        cors: false,
+        headers: {
+          Authorization: "Bearer {{setting.JWT_TOKEN}}",
+        },
+        secure: true,
+        contentType: "application/json",
+        dataType: "json",
+        data: {
+          subscription_id,
+          force,
+        },
+      })
+      .then(() => this.init())
+      .catch((err) =>
+        this.renderErrorMessage(this.container, err.responseJSON.detail)
+      );
   }
 }
 
