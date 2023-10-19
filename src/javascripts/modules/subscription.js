@@ -54,36 +54,37 @@ export default function Subscription({ subscription, title, onCancel }) {
             <StatusSpan status={subscription.recurring_status} />
           </Col>
         </Row>
-        {subscription.recurring_status && (
-          <Row>
-            <Col style={{ margin: "4px 0px" }}>
-              <Button
-                isPill
-                isDanger
-                isStretched
-                size="small"
-                style={{ margin: "4px 0px" }}
-                onClick={() => {
-                  onCancel(subscription.id, false);
-                }}
-              >
-                Cancel
-              </Button>
-              <Button
-                isPill
-                isDanger
-                isStretched
-                size="small"
-                style={{ margin: "4px 0px" }}
-                onClick={() => {
-                  onCancel(subscription.id, true);
-                }}
-              >
-                Cancel now
-              </Button>
-            </Col>
-          </Row>
-        )}
+
+        <Row style={{ margin: "4px 0px" }}>
+          {subscription.recurring_status && (
+            <Button
+              isPill
+              isDanger
+              isStretched
+              size="small"
+              style={{ margin: "4px 0px" }}
+              onClick={() => {
+                onCancel(subscription.id, false);
+              }}
+            >
+              Cancel
+            </Button>
+          )}
+          {subscription.sub_status == "ACTIVE" && (
+            <Button
+              isPill
+              isDanger
+              isStretched
+              size="small"
+              style={{ margin: "4px 0px" }}
+              onClick={() => {
+                onCancel(subscription.id, true);
+              }}
+            >
+              Cancel now
+            </Button>
+          )}
+        </Row>
       </Grid>
     </div>
   );
