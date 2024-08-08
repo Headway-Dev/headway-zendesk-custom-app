@@ -205,7 +205,7 @@ class App {
                   isExternal
                   href={`https://hub.solidgate.com/order-search?email=${requester.email}`}
                 >
-                  Solid subscriptions
+                  Solid orders
                 </Anchor>
               </SM>
             </Col>
