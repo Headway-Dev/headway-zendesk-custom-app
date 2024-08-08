@@ -5,7 +5,7 @@ import { Ellipsis, SM, Span } from "@zendeskgarden/react-typography";
 import { Grid, Row, Col } from "@zendeskgarden/react-grid";
 import { Alert, Title, Close } from "@zendeskgarden/react-notifications";
 import { Tooltip } from "@zendeskgarden/react-tooltips";
-import { Anchor, Button } from "@zendeskgarden/react-buttons";
+import { Anchor } from "@zendeskgarden/react-buttons";
 import { resizeContainer } from "../../javascripts/lib/helpers";
 import Subscription from "./subscription";
 import Payments from "./payments";
@@ -85,10 +85,10 @@ class App {
                     href="#default"
                     isExternal={false}
                     onClick={() => {
-                      this.copyText(requester.externalId);
+                      this.copyText(requesterData.user.id);
                     }}
                   >
-                    <Span hue="blue">{requester.externalId}</Span>
+                    <Span hue="blue">{requesterData.user.id}</Span>
                   </Anchor>
                 </Tooltip>
               </SM>
@@ -184,6 +184,7 @@ class App {
               </SM>
             </Col>
           </Row>
+
           <Row>
             <Col>
               <SM>
