@@ -197,6 +197,19 @@ class App {
               </SM>
             </Col>
           </Row>
+
+          <Row>
+            <Col>
+              <SM>
+                <Anchor
+                  isExternal
+                  href={`https://hub.solidgate.com/order-search?email=${requester.email}`}
+                >
+                  Solid subscriptions
+                </Anchor>
+              </SM>
+            </Col>
+          </Row>
         </Grid>
       </ThemeProvider>,
       container
