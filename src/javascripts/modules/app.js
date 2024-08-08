@@ -177,7 +177,7 @@ class App {
               <SM>
                 <Anchor
                   isExternal
-                  href={`https://app.iterable.com/users/profiles/${requester.email}/subscriptions`}
+                  href={`https://app.iterable.com/users/profiles/${requester.email}/subscriptions?projectId=14766`}
                 >
                   Iterable subscriptions
                 </Anchor>
