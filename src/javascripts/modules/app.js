@@ -5,7 +5,7 @@ import { Ellipsis, SM, Span } from "@zendeskgarden/react-typography";
 import { Grid, Row, Col } from "@zendeskgarden/react-grid";
 import { Alert, Title, Close } from "@zendeskgarden/react-notifications";
 import { Tooltip } from "@zendeskgarden/react-tooltips";
-import { Anchor, Button } from "@zendeskgarden/react-buttons";
+import { Anchor } from "@zendeskgarden/react-buttons";
 import { resizeContainer } from "../../javascripts/lib/helpers";
 import Subscription from "./subscription";
 import Payments from "./payments";
@@ -85,10 +85,10 @@ class App {
                     href="#default"
                     isExternal={false}
                     onClick={() => {
-                      this.copyText(requester.externalId);
+                      this.copyText(requesterData.user.id);
                     }}
                   >
-                    <Span hue="blue">{requester.externalId}</Span>
+                    <Span hue="blue">{requesterData.user.id}</Span>
                   </Anchor>
                 </Tooltip>
               </SM>
@@ -177,13 +177,14 @@ class App {
               <SM>
                 <Anchor
                   isExternal
-                  href={`https://app.iterable.com/users/profiles/${requester.email}/subscriptions`}
+                  href={`https://app.iterable.com/users/profiles/${requester.email}/subscriptions?projectId=14766`}
                 >
                   Iterable subscriptions
                 </Anchor>
               </SM>
             </Col>
           </Row>
+
           <Row>
             <Col>
               <SM>
@@ -192,6 +193,19 @@ class App {
                   href={`https://app.amplitude.com/analytics/get-headway/project/225541/search/email=${requester.email}`}
                 >
                   Amplitude events
+                </Anchor>
+              </SM>
+            </Col>
+          </Row>
+
+          <Row>
+            <Col>
+              <SM>
+                <Anchor
+                  isExternal
+                  href={`https://hub.solidgate.com/order-search?email=${requester.email}`}
+                >
+                  Solid orders
                 </Anchor>
               </SM>
             </Col>
