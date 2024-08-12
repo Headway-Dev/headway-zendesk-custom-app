@@ -2,7 +2,7 @@ import React from "react";
 import { Span } from "@zendeskgarden/react-typography";
 import { Title } from "@zendeskgarden/react-notifications";
 import { Grid, Row, Col } from "@zendeskgarden/react-grid";
-import { Button } from "@zendeskgarden/react-buttons";
+import { Anchor, Button } from '@zendeskgarden/react-buttons'
 import { SM } from "@zendeskgarden/react-typography";
 import StatusSpan from "./status_span";
 
@@ -10,6 +10,7 @@ export default function Subscription({ subscription, title, onCancel }) {
   return (
     <div>
       <Title style={{ margin: "12px 0px", bold: true }}>{title}</Title>
+
       <Grid>
         <Row>
           <Col size={3}>
@@ -17,10 +18,27 @@ export default function Subscription({ subscription, title, onCancel }) {
           </Col>
           <Col xs>
             <SM>
+              <Anchor
+                isExternal
+                href={`https://hub.solidgate.com/subscription-details/${subscription.id}`}
+              >
+                {subscription.id}
+              </Anchor>
+            </SM>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col size={3}>
+            <SM isBold={true}>Name:</SM>
+          </Col>
+          <Col xs>
+            <SM>
               <Span hue="grey">{subscription.name}</Span>
             </SM>
           </Col>
         </Row>
+
         <Row>
           <Col size={3}>
             <SM isBold={true}>Price:</SM>
@@ -34,6 +52,7 @@ export default function Subscription({ subscription, title, onCancel }) {
             </SM>
           </Col>
         </Row>
+
         <Row>
           <Col size={3}>
             <SM isBold={true}>Status:</SM>
@@ -46,6 +65,7 @@ export default function Subscription({ subscription, title, onCancel }) {
             </SM>
           </Col>
         </Row>
+
         <Row>
           <Col size={3}>
             <SM isBold={true}>Recurrent:</SM>
@@ -70,6 +90,7 @@ export default function Subscription({ subscription, title, onCancel }) {
               Cancel
             </Button>
           )}
+
           {subscription.sub_status == "ACTIVE" && (
             <Button
               isPill
