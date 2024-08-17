@@ -9,23 +9,27 @@ This repo contains a scaffold to help developers build [apps for Zendesk product
 
 ### Dependencies
 - [Node.js](https://nodejs.org/en/) >= 18.12.1
-- [Ruby](https://www.ruby-lang.org/) = 2.6.x
 
 ### Setup
 1. Clone or fork this repo
-2. Change (`cd`) into the `app_scaffolds/packages/react` directory
-3. Run `yarn install`
+2. Change (`cd`) into the `headway-zendesk-custom-app` directory
+3. Run `npm install`
 
 To run your app locally in Zendesk, you need the latest [Zendesk CLI](https://github.com/zendesk/zcli).
+
+```
+npm install -g @zendesk/zcli
+```
+
 
 ### Running locally
 
 To serve the app to your Zendesk instance with `?zcli_apps=true`, open a new terminal and run
 
 ```
-yarn run watch
+npm run watch
 ```
-and then open a new terminal under `apps_scaffolds/packages/react` directory and run
+and then open a new terminal and run
 ```
 zcli apps:server dist
 ```
@@ -101,7 +105,7 @@ This directory contains custom tooling to process translations at build time:
 [jest.config.js](https://jestjs.io/docs/en/configuration.html) is the configuration file for Jest
 
 #### package.json
-package.json is the configuration file for [Yarn](https://yarnpkg.com/), which is a package manager for JavaScript. This file includes information about your project and its dependencies. For more information on how to configure this file, see [Yarn package.json](https://yarnpkg.com/en/docs/package-json).
+package.json is the configuration file for **Npm**, which is a package manager for JavaScript. This file includes information about your project and its dependencies. For more information on how to configure this file, see [Npm package.json](https://docs.npmjs.com/cli/v10/configuring-npm/package-json).
 
 #### postcss.config.js
 postcss.config.js is the configuration file for [PostCSS](https://postcss.org/)
@@ -143,7 +147,7 @@ myParameter: 'some value!'
 The App Scaffold is currently setup for testing with [Jest](https://jestjs.io/). To run specs, open a new terminal and run
 
 ```
-yarn test
+npm test
 ```
 
 Specs live under the `spec` directory.
