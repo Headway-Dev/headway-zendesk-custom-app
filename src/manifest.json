@@ -1,15 +1,15 @@
 {
   "name": "Headway",
   "author": {
-    "name": "Vladyslav Kozyr",
-    "email": "vladyslav.kozyr@makeheadway.com"
+    "name": "Vladyslav Kukharchuk",
+    "email": "vladyslav.kukharchuk@makeheadway.com"
   },
   "defaultLocale": "en",
   "private": true,
   "location": {
     "support": {
       "ticket_sidebar": {
-        "url": "assets/iframe.html",
+        "url": "http://localhost:3000/",
         "flexible": true
       }
     }
