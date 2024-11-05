@@ -40,7 +40,7 @@ export default function Subscription({ subscription, title, onCancel }) {
             <SM>
               <Anchor
                   isExternal
-                  href={`https://hub.solidgate.com/subscription-details/${subscription.id}`}
+                  href={`https://canary.solidgate.com/subscriptions/subscription/${subscription.id}`}
               >
                 {subscription.id}
               </Anchor>

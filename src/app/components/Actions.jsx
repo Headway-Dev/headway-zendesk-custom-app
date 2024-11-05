@@ -40,7 +40,7 @@ export default function Actions({ userEmail }) {
                         <SM>
                             <Anchor
                                 isExternal
-                                href={`https://hub.solidgate.com/order-search?email=${userEmail}`}
+                                href={`https://canary.solidgate.com/payments/order?customer_email=${userEmail}`}
                             >
                                 Solid orders
                             </Anchor>
