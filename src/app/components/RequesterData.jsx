@@ -11,6 +11,7 @@ export default function RequesterData({ requester, onCancel }) {
         userEmail={requester.user.email}
         userId={requester.user.id}
         userCountry={requester.user.country}
+        userLanguage={requester.user.language}
       />
 
       <AppInfo
