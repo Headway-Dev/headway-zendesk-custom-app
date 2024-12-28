@@ -5,7 +5,7 @@ import {Tooltip} from "@zendeskgarden/react-tooltips";
 import {Anchor} from "@zendeskgarden/react-buttons";
 import { copyText } from '../utils/copyText.js'
 
-export default function GeneralInfo({userEmail, userId, userCountry}) {
+export default function GeneralInfo({userEmail, userId, userCountry, userLanguage}) {
     return (
         <div>
             <Title style={{ margin: "12px 0px", bold: true, textTransform: "uppercase" }}>General info</Title>
@@ -55,6 +55,15 @@ export default function GeneralInfo({userEmail, userId, userCountry}) {
                     </Col>
                     <Col>
                         <SM>{userCountry}</SM>
+                    </Col>
+                </Row>
+
+                <Row>
+                    <Col size={3}>
+                        <SM isBold={true}>Language:</SM>
+                    </Col>
+                    <Col>
+                        <SM>{userLanguage}</SM>
                     </Col>
                 </Row>
             </Grid>

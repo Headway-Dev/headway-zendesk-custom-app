@@ -17,6 +17,9 @@ export default function Requester({ requesterEmail }) {
 
     getRequesterByEmail(client, requesterEmail).then((requesterData) => {
       const user = { ...requesterData.user, email: requesterEmail }
+      if (requesterData.user.app) {
+        user.language = requesterData.user.app.language;
+      }
       const requester = { ...requesterData, user }
 
       setRequester(requester)
