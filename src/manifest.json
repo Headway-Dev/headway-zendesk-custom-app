@@ -21,8 +21,9 @@
   ],
   "parameters": [
     {
-      "name": "JWT_TOKEN",
+      "name": "TOKEN",
       "type": "text",
+      "required": true,
       "secure": true
     }
   ]
