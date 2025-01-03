@@ -4,7 +4,7 @@ export async function getRequesterByEmail(client, email) {
     method: "GET",
     cors: false,
     headers: {
-      Authorization: "Bearer {{setting.JWT_TOKEN}}",
+      Token: "{{setting.TOKEN}}",
     },
     secure: true,
   };
@@ -18,7 +18,7 @@ export async function cancelSubscription(client, subscription_id, force) {
     method: "POST",
     cors: false,
     headers: {
-      Authorization: "Bearer {{setting.JWT_TOKEN}}",
+      Token: "{{setting.TOKEN}}",
     },
     secure: true,
     contentType: "application/json",
