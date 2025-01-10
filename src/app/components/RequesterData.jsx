@@ -1,7 +1,6 @@
 import GeneralInfo from "./GeneralInfo.jsx";
 import AppInfo from "./AppInfo.jsx";
 import Subscription from "./Subscription.jsx";
-import Payments from "./Payments.jsx";
 import Actions from "./Actions.jsx";
 import Upsells from './Upsells.jsx'
 
@@ -34,10 +33,6 @@ export default function RequesterData({ requester, onCancel }) {
           title="Upsell subscription"
           onCancel={onCancel}
         />
-      )}
-
-      {requester.web_payments.length !== 0 && (
-        <Payments payments={requester.web_payments} />
       )}
 
       {requester.upsells.length !== 0 && (
