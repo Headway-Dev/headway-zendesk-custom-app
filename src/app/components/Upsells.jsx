@@ -2,25 +2,32 @@ import { Grid, Row, Col } from "@zendeskgarden/react-grid";
 import { Span, SM } from "@zendeskgarden/react-typography";
 import { Title } from "@zendeskgarden/react-notifications";
 
-export default function Payments({ payments }) {
+export default function Upsells({ upsells }) {
   return (
     <div>
-      <Title style={{ margin: "12px 0px", bold: true, textTransform: "uppercase" }}>Payments</Title>
+      <Title style={{ margin: "12px 0px", bold: true, textTransform: "uppercase" }}>Upsells</Title>
 
-      {[
-        ...new Map(
-          payments.reverse().map((item) => [item.order_id, item])
-        ).values(),
-      ].map((payment) => {
+      {upsells.map((upsell, index) => {
         return (
-          <Grid style={{ margin: "12px 0px" }} key={payment.order_id}>
+          <Grid style={{ margin: "12px 0px" }} key={index}>
             <Row>
               <Col size={3}>
                 <SM isBold={true}>Name:</SM>
               </Col>
               <Col xs>
                 <SM>
-                  <Span hue="grey">{payment.product_name}</Span>
+                  <Span hue="grey">{upsell.name}</Span>
+                </SM>
+              </Col>
+            </Row>
+
+            <Row>
+              <Col size={3}>
+                <SM isBold={true}>Provider:</SM>
+              </Col>
+              <Col xs>
+                <SM>
+                  <Span hue="grey">{upsell.provider}</Span>
                 </SM>
               </Col>
             </Row>
@@ -32,7 +39,7 @@ export default function Payments({ payments }) {
               <Col>
                 <SM>
                   <Span hue="grey">
-                    {payment.order_amount} {payment.order_currency}
+                    {upsell.amount} {upsell.currency}
                   </Span>
                 </SM>
               </Col>
@@ -44,7 +51,7 @@ export default function Payments({ payments }) {
               </Col>
               <Col>
                 <SM>
-                  <Span hue="grey">{payment.order_status}</Span>
+                  <Span hue="grey">{upsell.mode}</Span>
                 </SM>
               </Col>
             </Row>
