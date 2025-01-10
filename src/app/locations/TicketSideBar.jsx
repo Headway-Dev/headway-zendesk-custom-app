@@ -23,7 +23,7 @@ const TicketSideBar = () => {
 
   useEffect(() => {
     fetchRequesterEmail()
-    client.invoke('resize', { width: '100%', height: '1000px' })
+    client.invoke('resize', { width: '100%', height: '1400px' })
   }, [client])
 
   return (

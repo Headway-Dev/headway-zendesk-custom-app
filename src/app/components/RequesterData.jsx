@@ -3,6 +3,7 @@ import AppInfo from "./AppInfo.jsx";
 import Subscription from "./Subscription.jsx";
 import Payments from "./Payments.jsx";
 import Actions from "./Actions.jsx";
+import Upsells from './Upsells.jsx'
 
 export default function RequesterData({ requester, onCancel }) {
   return (
@@ -22,7 +23,7 @@ export default function RequesterData({ requester, onCancel }) {
       {requester.web_subscription && (
         <Subscription
           subscription={requester.web_subscription}
-          title="Web subscription"
+          title="Subscription"
           onCancel={onCancel}
         />
       )}
@@ -30,13 +31,17 @@ export default function RequesterData({ requester, onCancel }) {
       {requester.web_upsell_subscription && (
         <Subscription
           subscription={requester.web_upsell_subscription}
-          title="Web upsell subscription"
+          title="Upsell subscription"
           onCancel={onCancel}
         />
       )}
 
       {requester.web_payments.length !== 0 && (
         <Payments payments={requester.web_payments} />
+      )}
+
+      {requester.upsells.length !== 0 && (
+        <Upsells upsells={requester.upsells} />
       )}
 
       <Actions userEmail={requester.user.email} />
