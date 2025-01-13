@@ -39,7 +39,10 @@ export default function RequesterData({ requester, onCancel }) {
         <Upsells upsells={requester.upsells} />
       )}
 
-      <Actions userEmail={requester.user.email} />
+      <Actions
+        userEmail={requester.user.email}
+        userId={requester.user.id}
+      />
     </div>
   )
 }
