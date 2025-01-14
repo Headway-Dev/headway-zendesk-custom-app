@@ -32,18 +32,20 @@ export default function Upsells({ upsells }) {
               </Col>
             </Row>
 
-            <Row>
-              <Col size={3}>
-                <SM isBold={true}>Price:</SM>
-              </Col>
-              <Col>
-                <SM>
-                  <Span hue="grey">
-                    {upsell.amount} {upsell.currency}
-                  </Span>
-                </SM>
-              </Col>
-            </Row>
+            {upsell.amount !== 0.0 && upsell.currency !== "" &&
+              <Row>
+                <Col size={3}>
+                  <SM isBold={true}>Price:</SM>
+                </Col>
+                <Col>
+                  <SM>
+                    <Span hue="grey">
+                      {upsell.amount} {upsell.currency}
+                    </Span>
+                  </SM>
+                </Col>
+              </Row>
+            }
 
             <Row>
               <Col size={3}>
