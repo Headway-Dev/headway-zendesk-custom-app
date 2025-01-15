@@ -16,11 +16,17 @@ export default function Requester({ requesterEmail }) {
     setErrorMessage(null)
 
     getRequesterByEmail(client, requesterEmail).then((requesterData) => {
-      const user = { ...requesterData.user, email: requesterEmail }
+      const userData = { ...requesterData.user, email: requesterEmail }
       if (requesterData.user.app) {
-        user.language = requesterData.user.app.language;
+        userData.language = requesterData.user.app.language;
       }
-      const requester = { ...requesterData, user }
+
+      const requester = {
+        user: userData,
+        web_subscription: requesterData.subscription,
+        web_upsell_subscription: requesterData.upsell_subscription,
+        upsells: requesterData.upsells,
+      }
 
       setRequester(requester)
     }).catch((error) => {
