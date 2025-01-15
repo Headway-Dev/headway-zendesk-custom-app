@@ -81,8 +81,8 @@ export default function Subscription({ subscription, title, onCancel }) {
 
           <Col>
             <SM isBold={true}>
-              <Span hue={subscription.sub_status === "ACTIVE" ? "green" : "red"}>
-                {subscription.sub_status}
+              <Span hue={subscription.status === "ACTIVE" ? "green" : "red"}>
+                {subscription.status}
               </Span>
             </SM>
           </Col>
@@ -113,7 +113,7 @@ export default function Subscription({ subscription, title, onCancel }) {
               />
           )}
 
-          {subscription.sub_status === "ACTIVE" && (
+          {subscription.status === "ACTIVE" && (
               <CustomButton
                   text="Cancel now"
                   isLoading={isImmediateCanceling}
